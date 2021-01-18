@@ -1,0 +1,81 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{%block style%}
+    .wrapper{
+        width: 50%;
+        margin: 0 auto;
+    }
+    label{
+        letter-spacing: 0.9px;
+        padding: 4px 0;
+    }
+    @media(max-width:768px){
+        .wrapper{
+            width: 100%;
+        }
+    }
+{%endblock style%}
+{% block content %}
+    <div class="content-section">
+        <div class="wrapper">
+        <form action="" method="POST"> {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4 text-center pb-3">Join Today</legend>
+                <div class="container pb-3">
+                    <label for="username">Username :</label>
+                    <input type="text" name="username" autofocus="" autocapitalize="none" autocomplete="username" maxlength="150" class="textinput textInput form-control" required id="username">
+                </div>
+                {%if form.username.errors%}
+                {%for error in form.username.errors%}
+                <div class="alert alert-info">
+                    {{error.as_text}}
+                </div>
+                {%endfor%}
+                {%endif%}
+                <div class="container pb-2">
+                    <label for="email">Email :</label>
+                    <input type="email" name="email" autocomplete="email"
+                           class="textinput textInput form-control" required id="email">
+                </div>
+                {%if form.email.errors%}
+                <div class="alert alert-info">
+                    {{form.email.errors.as_text}}
+                </div>
+                {%endif%}
+                <div class="container pb-2">
+                    <label for="password1">Password :</label>
+                    <input type="password" name="password1" autocomplete="current-password"
+                           class="textinput textInput form-control" required id="password1">
+                </div>
+                {%if form.password1.errors%}
+                <div class="alert alert-info">
+                    {{form.password1.errors}}
+                </div>
+                {%endif%}
+                <div class="container pb-2">
+                    <label for="password2">Password Confirmation :</label>
+                    <input type="password" name="password2" autocomplete="current-password"
+                           class="textinput textInput form-control" required id="password2">
+                </div>
+                {%if form.password2.errors%}
+                {%for error in form.password2.errors%}
+                <div class="alert alert-info">
+                    {{error}}
+                </div>
+                {%endfor%}
+                {%endif%}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account?
+            </small>
+            <a class="ml-2" href="{%url 'users:login'%}">Login</a>
+        </div>
+        </div>
+    </div>
+{% endblock content %}

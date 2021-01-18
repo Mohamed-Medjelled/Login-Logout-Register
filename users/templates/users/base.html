@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link rel="icon" href="#" sizes="16x16 32x32" type="image/png">
+    <link rel="stylesheet" href="{% static 'css/simple-modal.css' %}" />
+    <script src="{% static 'js/simple-modal.js' %}"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Redressed&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            box-sizing: border-box;
+            line-height: 1.3;
+            outline: none;
+        }
+        body{
+            font-family: tahoma;
+            background: rgba(120,200,255,0.1);
+        }
+        .site-header{
+            background: rgb(72,196,219);
+            background: linear-gradient(63deg, rgba(72,196,219,0.6699054621848739) 68%, rgba(0,0,0,0.3309698879551821) 100%);
+            box-shadow: 0px 7px 11px 4px rgba(0,0,0,0.11);
+        }
+        .navbar-brand{
+            font-size: 2rem;
+            font-family: redressed;
+        }
+        legend{
+            font-family: redressed;
+        }
+        .nav-item:hover{
+            text-shadow: 1.2px 2px 5px rgba(160,100,170,0.8);
+            transition: text-shadow 0.25s;
+        }
+
+        {%block style%} {%endblock style%}
+    </style>
+</head>
+<body>
+<!-- get a youtube  video photo:
+1: ctrl+u
+2: ctrl+f in the new tab
+3: "thumbnailurl" in the search bar brought up by ctrl+f
+4: click link for thumbnail photo
+-->
+{%if user.is_authenticated%}
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{%url 'users:home'%}">Debates</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="{%url 'users:home'%}">Home</a>
+                <a class="nav-item nav-link" href="#">About</a>
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" href="#">Create</a>
+                <a class="nav-item nav-link" href="#">Profile</a>
+                <a class="nav-item nav-link" id="logout" href="#" onclick="openModal()">Logout</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+{%endif%}
+    <div class="container w-75 mt-3 p-5">
+
+    {%block content%}{%endblock content%}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        {%if user.is_authenticated%}
+            async function openModal() {
+                var myModal = new SimpleModal("Confirm Dialog!", "Are you sure to logout?", "Yes", "No");
+                try {
+                    const r = await myModal.question();
+                    if(r){
+                        var url = '{%url "users:logout"%}';
+                        fetch(url)
+                        .then(response => {
+                            location.href = '{%url "users:login"%}';
+                        })
+                    }
+
+                }catch(err) {
+                    console.log(err);
+                }
+            }
+        {%endif%}
+
+
+
+    </script>
+</body>
+</html>
